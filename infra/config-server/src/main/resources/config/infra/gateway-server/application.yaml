@@ -10,3 +10,12 @@ spring:
           uri: lb://main-service
           predicates:
             - Path=/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
