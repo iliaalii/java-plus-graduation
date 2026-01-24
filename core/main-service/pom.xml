@@ -1,33 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>ru.practicum</groupId>
-        <artifactId>stats</artifactId>
+        <artifactId>core</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>stats-server</artifactId>
-    <packaging>jar</packaging>
+    <artifactId>main-service</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>ru.practicum</groupId>
-            <artifactId>stats-dto</artifactId>
+            <artifactId>stats-client</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.6.0</version>
         </dependency>
 
         <dependency>
@@ -57,6 +49,21 @@
         </dependency>
 
         <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-jpa</artifactId>
+            <version>5.1.0</version>
+            <classifier>jakarta</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-apt</artifactId>
+            <version>5.1.0</version>
+            <classifier>jakarta</classifier>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
         </dependency>
@@ -77,8 +84,9 @@
         </dependency>
 
         <dependency>
-            <groupId>ru.practicum</groupId>
-            <artifactId>stats-dto</artifactId>
+            <groupId>org.zalando</groupId>
+            <artifactId>logbook-spring-boot-starter</artifactId>
+            <version>3.7.2</version>
         </dependency>
 
         <dependency>
@@ -87,13 +95,10 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-autoconfigure</artifactId>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-common</artifactId>
+            <version>2.6.0</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -117,6 +122,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
                 <configuration>
                     <compilerArgs>
                         <arg>-parameters</arg>
@@ -134,11 +140,39 @@
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok-mapstruct-binding</artifactId>
                         </path>
+                        <path>
+                            <groupId>com.querydsl</groupId>
+                            <artifactId>querydsl-apt</artifactId>
+                            <classifier>jakarta</classifier>
+                        </path>
+                        <path>
+                            <groupId>jakarta.persistence</groupId>
+                            <artifactId>jakarta.persistence-api</artifactId>
+                        </path>
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.6.1</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources/java/</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
-
-
 </project>
