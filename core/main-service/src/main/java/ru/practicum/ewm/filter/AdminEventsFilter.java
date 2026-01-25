@@ -20,11 +20,11 @@ import java.util.List;
 @DateRange
 public class AdminEventsFilter implements DateRangeAware {
 
-    List<Long> users;
+    private List<Long> users;
 
-    List<String> states;
+    private List<String> states;
 
-    List<Long> categories;
+    private List<Long> categories;
 
     @NotNull(message = "фильтр: `Время запроса начало` обязательно к заполнению")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

@@ -23,8 +23,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/users/{userId}/requests")
 @RequiredArgsConstructor
-@Slf4j
 @Validated
+@Slf4j
 public class UserRequestController {
     private final RequestService service;
 
