@@ -2,11 +2,11 @@ server:
   port: 0
 
 stats-server:
-  url: ${CLIENT_URL:http://localhost:9090}
+  url: http://localhost:9090
 
 spring:
   application:
-    name: main-service
+    name: category-service
   cloud:
     openfeign:
       circuitbreaker:

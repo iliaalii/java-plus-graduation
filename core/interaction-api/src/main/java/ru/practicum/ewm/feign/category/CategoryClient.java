@@ -10,7 +10,7 @@ import ru.practicum.ewm.dto.category.CategoryDto;
 import java.util.Map;
 import java.util.Set;
 
-@FeignClient(name = "main-service", fallbackFactory = CategoryClientFallbackFactory.class)
+@FeignClient(name = "category-service", fallbackFactory = CategoryClientFallbackFactory.class)
 public interface CategoryClient {
     @GetMapping("/categories/{id}")
     CategoryDto getCategoryById(@PathVariable Long id) throws ConditionsException;

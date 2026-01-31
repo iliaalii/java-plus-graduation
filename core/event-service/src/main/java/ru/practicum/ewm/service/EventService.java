@@ -170,7 +170,7 @@ public class EventService {
         CategoryDto category = getCategoryOrThrow(event.getCategoryId());
 
         statsService.saveHit(
-                "main-service",
+                "category-service",
                 request.getRequestURI(),
                 request.getRemoteAddr(),
                 LocalDateTime.now()
@@ -213,7 +213,7 @@ public class EventService {
     @Transactional(readOnly = true)
     public List<EventShortDto> findPublicEventsWithFilter(EventsFilter filter, Pageable pageable, HttpServletRequest request) {
         statsService.saveHit(
-                "main-service",
+                "category-service",
                 request.getRequestURI(),
                 request.getRemoteAddr(),
                 LocalDateTime.now()

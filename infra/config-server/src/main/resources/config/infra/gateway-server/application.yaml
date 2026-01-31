@@ -7,11 +7,11 @@ spring:
       discovery.locator.enabled: true
       routes:
         - id: category_service_route
-          uri: lb://main-service
+          uri: lb://category-service
           predicates:
             - Path=/categories/**,/admin/categories/**
         - id: compilation_service_route
-          uri: lb://main-service
+          uri: lb://category-service
           predicates:
             - Path=/compilations/**,/admin/compilations/**
         - id: comment_service_route
