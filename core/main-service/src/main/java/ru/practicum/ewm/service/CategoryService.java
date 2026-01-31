@@ -10,12 +10,15 @@ import org.springframework.validation.annotation.Validated;
 import ru.practicum.ewm.core.exception.ConflictException;
 import ru.practicum.ewm.core.exception.NotFoundException;
 import ru.practicum.ewm.dto.category.CategoryDto;
+import ru.practicum.ewm.feign.event.EventClient;
 import ru.practicum.ewm.mapper.CategoryMapper;
 import ru.practicum.ewm.model.Category;
 import ru.practicum.ewm.repository.CategoryRepository;
-import ru.practicum.ewm.repository.EventRepository;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -24,8 +27,7 @@ import java.util.List;
 public class CategoryService {
     private final CategoryRepository repository;
     private final CategoryMapper mapper;
-
-    private final EventRepository eventRepository;
+    private final EventClient eventClient;
 
     @Transactional
     public CategoryDto create(@Valid CategoryDto dto) throws ConflictException {
@@ -54,9 +56,7 @@ public class CategoryService {
             throw new NotFoundException("Удаляемая запись не найдена");
         }
 
-//        Optional<Event> eventOpt = eventRepository.findFirstByCategoryId(catId);
-//        if (eventOpt.isPresent()) {
-        if (eventRepository.existsByCategoryId(catId)) {
+        if (eventClient.existsByCategoryId(catId)) {
             throw new ConflictException("Категория с id = " + catId + " используется");
         }
         repository.deleteById(catId);
@@ -95,5 +95,10 @@ public class CategoryService {
                 .orElseThrow(() -> new NotFoundException("Запись не найдена"));
     }
 
-
+    @Transactional(readOnly = true)
+    public Map<Long, CategoryDto> findAllByIds(Set<Long> ids) {
+        List<Category> categories = repository.findAllById(ids);
+        return categories.stream()
+                .collect(Collectors.toMap(Category::getId, mapper::toDto));
+    }
 }

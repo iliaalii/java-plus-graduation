@@ -1,14 +1,6 @@
 package ru.practicum.ewm.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,11 +28,11 @@ public class Compilation {
     @Column(name = "pinned", nullable = false)
     private Boolean pinned;
 
-    @ManyToMany
-    @JoinTable(
+    @ElementCollection
+    @CollectionTable(
             name = "compilation_events",
-            joinColumns = @JoinColumn(name = "compilation_id"),
-            inverseJoinColumns = @JoinColumn(name = "event_id")
+            joinColumns = @JoinColumn(name = "compilation_id")
     )
-    private Set<Event> events = new HashSet<>();
+    @Column(name = "event_id", nullable = false)
+    private Set<Long> events = new HashSet<>();
 }

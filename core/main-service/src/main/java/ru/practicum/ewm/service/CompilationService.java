@@ -13,13 +13,12 @@ import ru.practicum.ewm.core.interfaceValidation.CreateValidation;
 import ru.practicum.ewm.core.interfaceValidation.UpdateValidation;
 import ru.practicum.ewm.dto.compilation.CompilationFullDto;
 import ru.practicum.ewm.dto.compilation.CompilationUpdateDto;
+import ru.practicum.ewm.dto.event.EventShortDto;
+import ru.practicum.ewm.feign.event.EventClient;
 import ru.practicum.ewm.mapper.CompilationMapper;
 import ru.practicum.ewm.model.Compilation;
-import ru.practicum.ewm.model.Event;
 import ru.practicum.ewm.repository.CompilationRepository;
-import ru.practicum.ewm.repository.EventRepository;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,17 +31,17 @@ public class CompilationService {
 
     private final CompilationRepository repository;
     private final CompilationMapper mapper;
-
-    private final EventRepository eventRepository;
-
+    private final EventClient eventClient;
 
     @Transactional
     @Validated(CreateValidation.class)
     public CompilationFullDto create(@Valid CompilationUpdateDto dto) throws ConditionsException {
-        Set<Event> events = new HashSet<>(getUniqueEvents(dto.getEvents()));
-        Compilation compilation = repository.save(mapper.toEntity(dto, events));
+        Set<Long> eventIds = getUniqueEventIds(dto.getEvents());
+
+        Compilation compilation = repository.save(mapper.toEntity(dto, eventIds));
+        Set<EventShortDto> event = eventClient.findAllByIdIn(compilation.getEvents());
         log.info("Создана подборка, id = {}", compilation.getId());
-        return mapper.toFullDto(compilation);
+        return mapper.toFullDto(compilation, event);
     }
 
     @Transactional
@@ -60,10 +59,11 @@ public class CompilationService {
     public CompilationFullDto update(Long compId, @Valid CompilationUpdateDto dto) throws ConditionsException {
         var compilation = findById(compId);
 
-        Set<Event> events = new HashSet<>(getUniqueEvents(dto.getEvents()));
+        Set<Long> events = getUniqueEventIds(dto.getEvents());
         compilation = mapper.toEntityGeneral(compilation, dto, events);
+        Set<EventShortDto> event = eventClient.findAllByIdIn(compilation.getEvents());
         log.info("Обновлена подборка id = {}", compId);
-        return mapper.toFullDto(compilation);
+        return mapper.toFullDto(compilation, event);
     }
 
     @Transactional(readOnly = true)
@@ -80,25 +80,21 @@ public class CompilationService {
 
         return page.getContent()
                 .stream()
-                .map(mapper::toFullDto)
+                .map(comp -> mapper.toFullDto(comp, eventClient.findAllByIdIn(comp.getEvents())))
                 .toList();
     }
 
-    private List<Event> getUniqueEvents(List<Long> eventsByDto) throws ConditionsException {
-        List<Event> events = new ArrayList<>();
-        if (eventsByDto != null && !eventsByDto.isEmpty()) {
-            Set<Long> unique = new HashSet<>(eventsByDto);
-            log.info("Проверка уникальности events");
-            if (unique.size() != eventsByDto.size()) {
-                throw new ConditionsException("Список событий содержит дубликаты");
-            }
-            log.info("Сбор events для заполнения");
-            events = eventRepository.findAllById(eventsByDto);
-            if (events.size() != eventsByDto.size()) {
-                throw new NotFoundException("Некоторые события не найдены");
-            }
+    private Set<Long> getUniqueEventIds(List<Long> eventIds) throws ConditionsException {
+        if (eventIds == null || eventIds.isEmpty()) {
+            return Set.of();
         }
-        return events;
+
+        Set<Long> unique = new HashSet<>(eventIds);
+        if (unique.size() != eventIds.size()) {
+            throw new ConditionsException("Список событий содержит дубликаты");
+        }
+
+        return unique;
     }
 
     @Transactional(readOnly = true)
@@ -108,6 +104,7 @@ public class CompilationService {
 
     @Transactional(readOnly = true)
     public CompilationFullDto getEntityFool(Long compId) {
-        return mapper.toFullDto(findById(compId));
+        Compilation comp = findById(compId);
+        return mapper.toFullDto(comp, eventClient.findAllByIdIn(comp.getEvents()));
     }
 }
