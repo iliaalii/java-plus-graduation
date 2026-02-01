@@ -2,7 +2,6 @@ package ru.practicum.ewm.controller.admin;
 
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +20,6 @@ import ru.practicum.ewm.service.CategoryService;
 @RequestMapping(path = "/admin/categories")
 @RequiredArgsConstructor
 @Validated
-@Slf4j
 public class AdminCategoryController {
     private final CategoryService service;
 

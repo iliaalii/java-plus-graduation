@@ -1,9 +1,7 @@
 package ru.practicum.ewm.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.constant.RequestStatus;
 import ru.practicum.ewm.service.RequestService;
@@ -14,8 +12,6 @@ import java.util.Set;
 @RestController
 @RequestMapping("/requests")
 @RequiredArgsConstructor
-@Validated
-@Slf4j
 public class RequestController {
     private final RequestService service;
 

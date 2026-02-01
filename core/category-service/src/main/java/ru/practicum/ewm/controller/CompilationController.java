@@ -2,7 +2,6 @@ package ru.practicum.ewm.controller;
 
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.annotation.Validated;
@@ -20,7 +19,6 @@ import java.util.List;
 @RequestMapping("/compilations")
 @RequiredArgsConstructor
 @Validated
-@Slf4j
 public class CompilationController {
     private final CompilationService service;
 

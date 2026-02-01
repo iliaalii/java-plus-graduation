@@ -1,7 +1,6 @@
 package ru.practicum.ewm.service;
 
 import com.querydsl.core.BooleanBuilder;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

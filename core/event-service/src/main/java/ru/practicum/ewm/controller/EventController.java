@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -24,7 +23,6 @@ import java.util.Set;
 @RequestMapping(path = "/events")
 @RequiredArgsConstructor
 @Validated
-@Slf4j
 public class EventController {
     private final EventService service;
 

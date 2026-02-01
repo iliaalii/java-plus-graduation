@@ -2,7 +2,6 @@ package ru.practicum.ewm.controller;
 
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.annotation.Validated;
@@ -18,7 +17,6 @@ import java.util.Set;
 @RequestMapping(path = "/categories")
 @RequiredArgsConstructor
 @Validated
-@Slf4j
 public class CategoryController {
     private final CategoryService service;
 
