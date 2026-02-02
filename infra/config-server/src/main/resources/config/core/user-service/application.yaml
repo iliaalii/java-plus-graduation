@@ -1,0 +1,36 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: user-service
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5438/user-db
+    username: postgres
+    password: postgres
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+
+feign:
+  circuitbreaker:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000

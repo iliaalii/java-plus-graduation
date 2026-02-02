@@ -1,45 +1,60 @@
-stats-server:
-  build: stats/stats-server
-  container_name: stats-server
-  ports:
-    - "9090:9090"
-  environment:
-    - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/stats-db
-    - SPRING_DATASOURCE_USERNAME=postgres
-    - SPRING_DATASOURCE_PASSWORD=postgres
-  depends_on:
-    - stats-db
+services:
+  stats-db:
+    image: postgres:16.1
+    container_name: stats-db
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: stats-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
 
-stats-db:
-  image: postgres:16.1
-  container_name: stats-db
-  ports:
-    - "5433:5432"
-  environment:
-    - POSTGRES_DB=stats-db
-    - POSTGRES_USER=postgres
-    - POSTGRES_PASSWORD=postgres
+  main-db:
+    image: postgres:16.1
+    container_name: main-db
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_DB: main-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
 
-main-service:
-  build: core/main-service
-  container_name: main-service
-  ports:
-    - "8080:8080"
-  environment:
-    - CLIENT_URL=http://stats-server:9090
-    - SPRING_DATASOURCE_URL=jdbc:postgresql://main-db:5432/main-db
-    - SPRING_DATASOURCE_USERNAME=postgres
-    - SPRING_DATASOURCE_PASSWORD=postgres
-  depends_on:
-    - main-db
-    - stats-server
+  comment-db:
+    image: postgres:16.1
+    container_name: comment-db
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_DB: comment-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
 
-main-db:
-  image: postgres:16.1
-  container_name: main-db
-  ports:
-    - "5434:5432"
-  environment:
-    - POSTGRES_DB=main-db
-    - POSTGRES_USER=postgres
-    - POSTGRES_PASSWORD=postgres
+  event-db:
+    image: postgres:16.1
+    container_name: event-db
+    ports:
+      - "5436:5432"
+    environment:
+      POSTGRES_DB: event-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  request-db:
+    image: postgres:16.1
+    container_name: request-db
+    ports:
+      - "5437:5432"
+    environment:
+      POSTGRES_DB: request-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  user-db:
+    image: postgres:16.1
+    container_name: user-db
+    ports:
+      - "5438:5432"
+    environment:
+      POSTGRES_DB: user-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
