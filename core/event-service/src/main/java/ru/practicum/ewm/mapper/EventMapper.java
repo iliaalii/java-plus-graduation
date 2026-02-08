@@ -22,11 +22,10 @@ public interface EventMapper {
     @Mapping(target = "category", source = "category")
     @Mapping(target = "initiator", source = "initiator")
     @Mapping(target = "confirmedRequests", source = "confirmedRequests")
-    @Mapping(target = "views", source = "views")
+    @Mapping(target = "rating", ignore = true)
     @Mapping(target = "comments", source = "comments")
     EventFullDto eventToFullDto(Event event,
                                 Long confirmedRequests,
-                                Long views,
                                 List<CommentDto> comments,
                                 CategoryDto category,
                                 UserDto initiator);
@@ -35,10 +34,9 @@ public interface EventMapper {
     @Mapping(target = "category", source = "category")
     @Mapping(target = "initiator", source = "initiator")
     @Mapping(target = "confirmedRequests", source = "confirmedRequests")
-    @Mapping(target = "views", source = "views")
+    @Mapping(target = "rating", ignore = true)
     EventShortDto eventToShortDto(Event event,
                                   Long confirmedRequests,
-                                  Long views,
                                   CategoryDto category,
                                   UserDto initiator);
 

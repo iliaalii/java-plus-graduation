@@ -24,4 +24,9 @@ public class RequestController {
     public Map<Long, Long> countConfirmedByEventIds(@RequestParam Set<Long> eventIds) {
         return service.countConfirmedByEventIds(eventIds);
     }
+
+    @GetMapping("/confirmed/{userId}/event/{eventId}/")
+    Boolean existsConfirmedRequest(@PathVariable Long userId, @PathVariable Long eventId) {
+        return service.existsConfirmedRequest(userId, eventId);
+    }
 }
