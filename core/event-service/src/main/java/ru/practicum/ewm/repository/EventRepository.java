@@ -4,8 +4,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import ru.practicum.ewm.constant.EventState;
 import ru.practicum.ewm.model.Event;
 
+import java.util.List;
 import java.util.Set;
 
 public interface EventRepository extends JpaRepository<Event, Long>, QuerydslPredicateExecutor<Event> {
@@ -14,4 +16,6 @@ public interface EventRepository extends JpaRepository<Event, Long>, QuerydslPre
     Boolean existsByCategoryId(Long categoryId);
 
     Set<Event> findAllByIdIn(Set<Long> ids);
+
+    List<Event> findAllByIdInAndState(Set<Long> ids, EventState state);
 }

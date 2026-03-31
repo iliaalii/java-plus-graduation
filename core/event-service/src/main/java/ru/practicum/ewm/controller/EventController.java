@@ -33,9 +33,27 @@ public class EventController {
         return service.findPublicEventsWithFilter(filter, pageable, request);
     }
 
-    @GetMapping("/{id}")
-    public EventFullDto findById(@PathVariable @Positive Long id, HttpServletRequest request) throws ConflictException, ConditionsException {
-        return service.findPublicEventById(id, request);
+    @GetMapping("/{eventId}")
+    public EventFullDto findById(
+            @PathVariable @Positive Long eventId,
+            @RequestHeader(value = "X-EWM-USER-ID", required = false) Long userId,
+            HttpServletRequest request) throws ConflictException, ConditionsException {
+        return service.findPublicEventById(eventId, userId, request);
+    }
+
+    @GetMapping("/recommendations")
+    public List<EventShortDto> getRecommendations(
+            @RequestHeader(value = "X-EWM-USER-ID", required = false) Long userId,
+            @RequestParam(defaultValue = "10") @Positive int size) {
+        return service.getRecommendations(userId, size);
+    }
+
+    @PutMapping("/{eventId}/like")
+    @ResponseStatus(org.springframework.http.HttpStatus.NO_CONTENT)
+    public void likeEvent(
+            @PathVariable Long eventId,
+            @RequestHeader(value = "X-EWM-USER-ID", required = false) Long userId) throws ConflictException {
+        service.likeEvent(userId, eventId);
     }
 
     @GetMapping("/category/{catId}/exists")

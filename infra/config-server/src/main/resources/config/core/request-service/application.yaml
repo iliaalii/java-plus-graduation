@@ -45,3 +45,11 @@ feign:
       default:
         connectTimeout: 5000
         readTimeout: 5000
+
+grpc:
+  client:
+    collector:
+      address: 'discovery:///collector'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext

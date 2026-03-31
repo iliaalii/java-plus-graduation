@@ -16,4 +16,7 @@ public interface RequestClient {
 
     @GetMapping("/requests/count")
     Map<Long, Long> countConfirmedByEventIds(@RequestParam Set<Long> eventIds);
+
+    @GetMapping("/requests/confirmed/{userId}/event/{eventId}/")
+    Boolean existsConfirmedRequest(@PathVariable Long userId, @PathVariable Long eventId);
 }

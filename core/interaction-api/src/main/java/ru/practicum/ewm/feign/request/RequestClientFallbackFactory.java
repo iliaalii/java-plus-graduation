@@ -28,6 +28,11 @@ public class RequestClientFallbackFactory implements FallbackFactory<RequestClie
                     public Map<Long, Long> countConfirmedByEventIds(Set<Long> eventIds) {
                         throw fe;
                     }
+
+                    @Override
+                    public Boolean existsConfirmedRequest(Long userId, Long eventId) {
+                        throw fe;
+                    }
                 };
             }
         }
@@ -43,6 +48,11 @@ public class RequestClientFallbackFactory implements FallbackFactory<RequestClie
             public Map<Long, Long> countConfirmedByEventIds(Set<Long> eventIds) {
                 return eventIds.stream()
                         .collect(Collectors.toMap(id -> id, id -> 0L));
+            }
+
+            @Override
+            public Boolean existsConfirmedRequest(Long userId, Long eventId) {
+                return false;
             }
         };
     }
